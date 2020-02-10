@@ -53,6 +53,46 @@ void loop() {
 
 }
 
+void stopAll() {
+  digitalWrite(HBRIDGE_1, LOW);
+  digitalWrite(HBRIDGE_2, LOW);
+  digitalWrite(HBRIDGE_3, LOW);
+  digitalWrite(HBRIDGE_4, LOW);
+}
+
+void turnLeft() {
+  //Wheel A
+  digitalWrite(HBRIDGE_1, LOW);
+  analogWrite(HBRIDGE_2, speedOutput);
+  //Wheel B
+  digitalWrite(HBRIDGE_4, LOW);
+  analogWrite(HBRIDGE_3, speedOutput);
+  delay(500);
+  stopAll();
+}
+
+void turnRight() {
+  //Wheel A
+  digitalWrite(HBRIDGE_2, LOW);
+  analogWrite(HBRIDGE_1, speedOutput);
+  //Wheel B
+  digitalWrite(HBRIDGE_3, LOW);
+  analogWrite(HBRIDGE_4, speedOutput);
+  delay(500);
+  stopAll();
+}
+
+void turnFullCircle() {
+  //Wheel A
+  digitalWrite(HBRIDGE_2, LOW);
+  analogWrite(HBRIDGE_1, speedOutput);
+  //Wheel B
+  digitalWrite(HBRIDGE_3, LOW);
+  analogWrite(HBRIDGE_4, speedOutput);
+  delay(1000);
+  stopAll();
+}
+
 /*
 int incomingByte = 0;
 int dutycycle = 0;
