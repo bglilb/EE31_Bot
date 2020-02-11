@@ -1,9 +1,9 @@
 int speedOutput = 64;
 
-const int HBRIDGE_1 = 11;
-const int HBRIDGE_2 = 10;
-const int HBRIDGE_3 = 9;
-const int HBRIDGE_4 = 8;
+const int HBRIDGE_1 = 10;
+const int HBRIDGE_2 = 11;
+const int HBRIDGE_3 = 8;
+const int HBRIDGE_4 = 9;
 
 void setup() {
   speedOutput = 0;
@@ -22,6 +22,17 @@ void setup() {
 void loop() {
   if (Serial.available() > 0) {
     String str = Serial.readString();
+
+    if (str == "left") {
+      speedOutput = 64;
+      turnLeft(); 
+    } else if (str == "right") {
+      speedOutput = 64;
+      turnRight();
+    } else if (str == "circle") {
+      speedOutput = 64;
+      turnFullCircle();
+    }
     
     speedOutput = str.toInt();
     if (speedOutput > 255) speedOutput = 255;
@@ -49,8 +60,6 @@ void loop() {
     digitalWrite(HBRIDGE_3, LOW);
     analogWrite(HBRIDGE_4, abs(speedOutput));
   }
-
-
 }
 
 void stopAll() {
@@ -62,23 +71,23 @@ void stopAll() {
 
 void turnLeft() {
   //Wheel A
-  digitalWrite(HBRIDGE_1, LOW);
-  analogWrite(HBRIDGE_2, speedOutput);
-  //Wheel B
-  digitalWrite(HBRIDGE_4, LOW);
-  analogWrite(HBRIDGE_3, speedOutput);
-  delay(500);
-  stopAll();
-}
-
-void turnRight() {
-  //Wheel A
   digitalWrite(HBRIDGE_2, LOW);
   analogWrite(HBRIDGE_1, speedOutput);
   //Wheel B
   digitalWrite(HBRIDGE_3, LOW);
   analogWrite(HBRIDGE_4, speedOutput);
-  delay(500);
+  delay(2500);
+  stopAll();
+}
+
+void turnRight() {
+  //Wheel A
+  digitalWrite(HBRIDGE_1, LOW);
+  analogWrite(HBRIDGE_2, speedOutput);
+  //Wheel B
+  digitalWrite(HBRIDGE_4, LOW);
+  analogWrite(HBRIDGE_3, speedOutput);
+  delay(2500);
   stopAll();
 }
 
@@ -89,7 +98,7 @@ void turnFullCircle() {
   //Wheel B
   digitalWrite(HBRIDGE_3, LOW);
   analogWrite(HBRIDGE_4, speedOutput);
-  delay(1000);
+  delay(6700);
   stopAll();
 }
 
@@ -98,11 +107,8 @@ int incomingByte = 0;
 int dutycycle = 0;
 void setup() {
   Serial.begin(9600);
-
   for(int i = 0; i < 5; i++)  Serial.println("CHANGE NEWLINE TO NO LINE ENDING IN DROP-DOWN MENU AT BOTTOM OF WINDOW");
-
 }
-
 void loop() {
       if(Serial.available() > 0){
           String str = "";
@@ -118,4 +124,3 @@ void loop() {
       Serial.print(dutycycle);
     }
 } */
-
