@@ -18,7 +18,7 @@ void setup() {
 bool light_sensor_on = true;
 void loop(){
   int detected_color = light_sensor_loop();
-  Serial.print(detected_color);
+  Serial.println(detected_color);
 }
 
 
@@ -29,7 +29,7 @@ const int BLACK = 4;
 
 int last_red_value = 0;
 int last_blue_value = 0;
-void light_sensor_loop(){
+int light_sensor_loop(){
     int sequence = millis() % 100;
   
   if (sequence < 33) {
