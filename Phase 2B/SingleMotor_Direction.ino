@@ -33,6 +33,7 @@ void loop() {
       speedOutput = 64;
       turnFullCircle();
     }
+    else {
     
     speedOutput = str.toInt();
     if (speedOutput > 255) speedOutput = 255;
@@ -40,6 +41,8 @@ void loop() {
     
     String msg = "New Speed: ";
     Serial.println(msg + speedOutput);
+    }
+
   }
     
   if (speedOutput >= 0) {
@@ -69,25 +72,29 @@ void stopAll() {
   digitalWrite(HBRIDGE_4, LOW);
 }
 
-void turnLeft() {
+void turnRight() {
+  Serial.println("Turning Left");
   //Wheel A
   digitalWrite(HBRIDGE_2, LOW);
   analogWrite(HBRIDGE_1, speedOutput);
   //Wheel B
   digitalWrite(HBRIDGE_3, LOW);
-  analogWrite(HBRIDGE_4, speedOutput);
-  delay(2500);
+  digitalWrite(HBRIDGE_4, LOW);
+  delay(3350);
+  speedOutput = 0;
   stopAll();
 }
 
-void turnRight() {
+void turnLeft() {
+  Serial.println("Turning Right");
   //Wheel A
   digitalWrite(HBRIDGE_1, LOW);
-  analogWrite(HBRIDGE_2, speedOutput);
+  digitalWrite(HBRIDGE_2, LOW);
   //Wheel B
   digitalWrite(HBRIDGE_4, LOW);
   analogWrite(HBRIDGE_3, speedOutput);
-  delay(2500);
+  delay(3350);
+  speedOutput = 0;
   stopAll();
 }
 
@@ -98,7 +105,8 @@ void turnFullCircle() {
   //Wheel B
   digitalWrite(HBRIDGE_3, LOW);
   analogWrite(HBRIDGE_4, speedOutput);
-  delay(6700);
+  delay(4500);
+  speedOutput = 0;
   stopAll();
 }
 
