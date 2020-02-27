@@ -7,6 +7,7 @@ const int HBRIDGE_4 = 9;
 
 const int BLUE_LED = 2;
 const int RED_LED = 3;
+const int YELLOW_LED = 12;
 const int LIGHT_SENSOR = A0;
 const int HALL_SENSOR = A15;
 
@@ -25,6 +26,7 @@ void setup() {
   pinMode(HBRIDGE_4, OUTPUT);
   pinMode(BLUE_LED, OUTPUT);
   pinMode(RED_LED, OUTPUT);
+  pinMode(YELLOW_LED, OUTPUT);
   pinMode(HALL_SENSOR, INPUT); //Analog
     
   Serial.begin(9600);
@@ -35,6 +37,7 @@ void setup() {
 
 const int STOP_AT_BLUE_LINE = 1; // Design Phase 3A, bulletpoint 2
 const int ARC_LEFT_TURN = 2; // Design Phase 3A, bulletpoint 4
+const int DIFF_COLOR = 3; //design Phase 3A, bulletpoint 5
 int state = STOP_AT_BLUE_LINE;
 int magfield = 0;
 void loop() {
@@ -53,11 +56,16 @@ void loop() {
   Serial.println(detected_color);
 
   magfield = analogRead(HALL_SENSOR);
-  Serial.println(magfield);
-  //magField = map(magField
+
+  if (magfield < 200) {
+    digitalWrite(YELLOW_LED, HIGH);
+  }else {
+    digitalWrite(YELLOW_LED, LOW);
+  }
 
   if (state == STOP_AT_BLUE_LINE) {
     // Drive straight until you hit blue
+    Serial.println(detected_color);
     if (detected_color != BLUE){
       drive_loop(45, 45);
     }
@@ -72,6 +80,18 @@ void loop() {
     }
     else {
       drive_loop(35, 35);
+    }
+  }
+
+  if (state == DIFF_COLOR) {
+    if (detected_color == BLUE) {
+      drive_loop(0,45);
+    }else if (detected_color == RED) {
+      drive_loop(45,0);
+    }else if (detected_color == YELLOW){
+      drive_loop(0,0);
+    } else {
+      drive_loop(45,45);
     }
   }
 }
